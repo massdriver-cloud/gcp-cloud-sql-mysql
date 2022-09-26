@@ -1,0 +1,56 @@
+# This file will be used to generate all of the schema-*.json files in a bundle
+schema: draft-07
+name: "gcp-cloud-sql-mysql"
+description: "GCP Cloud SQL MySQL Database"
+source_url: github.com/YOUR_NAME_HERE/gcp-cloud-sql-mysql
+access: "private"
+type: "bundle"
+
+# schema-params.json
+# JSON Schema sans-fields above
+params:
+  examples:
+    - __name: Development
+  required:
+    - foo
+  properties:
+    foo:
+      type: string
+      title: Foo
+      description: Name of gcp-cloud-sql-mysql
+      default: ""
+      examples:
+        - US-West 2 VPC
+        - US-East 1 VPC
+
+connections:
+  required:
+    - gcp_authentication
+    - gcp_global_network
+  properties:
+    gcp_authentication:
+      $ref: massdriver/gcp-service-account
+    gcp_global_network:
+      $ref: massdriver/gcp-global-network
+
+
+artifacts:
+  required:
+    - authentication
+  properties:
+    authentication:
+      $ref: massdriver/mysql-authentication
+
+# schema-ui.json
+# List of form customizations for params-schema
+ui:
+  ui:order:
+    - "*"
+  ## set top level ui:wiget
+  # secret_key:
+  #    ui:widget: "password"
+  ## Set key in an array of objects
+  # secrets:
+  #   items:
+  #     mdKeyId:
+  #       ui:widget: "hidden"
