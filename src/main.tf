@@ -1,4 +1,6 @@
 locals {
+  # Cloud SQL expects the Global VPC GRN
+  network_id = var.subnetwork.data.infrastructure.gcp_global_network_grn
   # These are internal-only sane defaults
   massdriver_maitenance_window_day   = "Tuesday"
   massdriver_maintenance_window_hour = 2

@@ -96,6 +96,18 @@ params:
           title: Query Insights Enabled
           description: Enables query insights for your instance
           default: false
+    transaction_log_retention_days:
+      type: integer
+      title: Transaction Log Retention Days
+      description: The number of days to keep the transaction logs before deleting them.
+      default: 5
+      minimum: 1
+      maximum: 7
+    deletion_protection:
+      title: Deletion Protection
+      description: If the DB instance should have deletion protection enabled.
+      type: boolean
+      default: true
     tls_enabled:
       type: boolean
       title: TLS Enabled
@@ -106,14 +118,11 @@ params:
 connections:
   required:
     - gcp_authentication
-    # - gcp_global_network
-    - gcp_subnetwork
+    - subnetwork
   properties:
     gcp_authentication:
       $ref: massdriver/gcp-service-account
-    # gcp_global_network:
-    #   $ref: massdriver/gcp-global-network
-    gcp_subnetwork:
+    subnetwork:
       $ref: massdriver/gcp-subnetwork
 
 
