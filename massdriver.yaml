@@ -12,16 +12,90 @@ params:
   examples:
     - __name: Development
   required:
-    - foo
+    - engine_version
+    - instance_configuration
+    - database_configuration
   properties:
-    foo:
+    engine_version:
       type: string
-      title: Foo
-      description: Name of gcp-cloud-sql-mysql
-      default: ""
-      examples:
-        - US-West 2 VPC
-        - US-East 1 VPC
+      title: MySQL Major Version
+      description: The major version of MySQL to use for your database. GCP manages minor version upgrades.
+      default: 8.x
+      oneOf:
+      - title: 8.x
+        const: MYSQL_8_0
+      - title: "5.7"
+        const: MYSQL_5_7
+    instance_configuration:
+      type: object
+      title: Instance Configuration
+      description: "Instance type, disk size, configure properties for your primary instance."
+      required:
+        - disk_size
+        - disk_type
+        - tier
+      properties:
+        disk_size:
+          type: integer
+          title: Disk Size
+          description: The size of the primary database instance in GB.
+          minimum: 20
+          maximum: 3054
+        disk_type:
+          type: string
+          title: Disk Type
+          description: Solid State has better performance for mixtures of reads and writes. Use Hard Disks for continuous read workloads or for cheaper storage.
+          default: Solid State
+          oneOf:
+          - title: Solid State
+            const: PD_SSD
+          - title: Hard Disk
+            const: PD_HDD
+        tier:
+          type: string
+          title: Instance Type
+          description: The type of compute used for the master instance.
+          enum:
+            - db-f1-micro
+            - db-g1-small
+            - db-n1-standard-1
+            - db-n1-standard-2
+            - db-n1-standard-4
+            - db-n1-standard-8
+            - db-n1-standard-16
+            - db-n1-standard-32
+            - db-n1-standard-64
+            - db-n1-standard-96
+            - db-n1-highmem-2
+            - db-n1-highmem-4
+            - db-n1-highmem-8
+            - db-n1-highmem-16
+            - db-n1-highmem-32
+            - db-n1-highmem-64
+            - db-n1-highmem-96
+    database_configuration:
+      type: object
+      title: Database Configuration
+      description: "High availability, backups, other database settings can be configured here."
+      required:
+        - retained_backup_count
+      properties:
+        high_availability_enabled:
+          type: boolean
+          title: Enable High Availability
+          description: If set to true, GCP will manage a hot standby primary node for you. It will automatically fail over to the hot stanby in the event of a zonal or node failure drastically minimizing downtime.
+          default: true
+        retained_backup_count:
+          type: integer
+          title: Max Backups To Keep
+          description: The number of backups to keep. If another backup is made, the oldest one is deleted.
+          minimum: 0
+          maximum: 20
+        query_insights_enabled:
+          type: boolean
+          title: Query Insights Enabled
+          description: Enables query insights for your instance
+          default: false
     tls_enabled:
       type: boolean
       title: TLS Enabled
@@ -55,11 +129,4 @@ artifacts:
 ui:
   ui:order:
     - "*"
-  ## set top level ui:wiget
-  # secret_key:
-  #    ui:widget: "password"
-  ## Set key in an array of objects
-  # secrets:
-  #   items:
-  #     mdKeyId:
-  #       ui:widget: "hidden"
+
