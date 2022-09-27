@@ -9,9 +9,12 @@ locals {
     password = ""
     hostname = google_sql_database_instance.main.private_ip_address
     port     = ""
-    certificate = {
-      cert = google_sql_database_instance.main.server_ca_cert[0].cert
-    }
+    certificate = var.tls_enabled ? {
+      cert             = google_sql_database_instance.main.server_ca_cert[0].cert
+      create_time      = google_sql_database_instance.redis.server_ca_certs[0].create_time
+      expiration_time  = google_sql_database_instance.redis.server_ca_certs[0].expiration_time
+      sha1_fingerprint = google_sql_database_instance.redis.server_ca_certs[0].sha1_fingerprint
+    } : null
   }
 
   artifact = {
@@ -33,6 +36,6 @@ locals {
 resource "massdriver_artifact" "authentication" {
   field                = "authentication"
   provider_resource_id = google_sql_database_instance.main.id
-  name                 = "a contextual name for the artifact"
+  name                 = "'Root' SQL user credentials for: ${google_sql_database_instance.main.self_link}"
   artifact             = jsonencode(local.artifact)
 }

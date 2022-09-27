@@ -22,16 +22,25 @@ params:
       examples:
         - US-West 2 VPC
         - US-East 1 VPC
+    tls_enabled:
+      type: boolean
+      title: TLS Enabled
+      description: Enable TLS encryption
+      default: true
+      $md.immutable: true
 
 connections:
   required:
     - gcp_authentication
-    - gcp_global_network
+    # - gcp_global_network
+    - gcp_subnetwork
   properties:
     gcp_authentication:
       $ref: massdriver/gcp-service-account
-    gcp_global_network:
-      $ref: massdriver/gcp-global-network
+    # gcp_global_network:
+    #   $ref: massdriver/gcp-global-network
+    gcp_subnetwork:
+      $ref: massdriver/gcp-subnetwork
 
 
 artifacts:

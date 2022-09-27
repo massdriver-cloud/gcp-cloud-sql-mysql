@@ -5,10 +5,6 @@ resource "google_sql_database_instance" "main" {
   region           = "us-central1"
   database_version = "MYSQL_8_0"
 
-  # depends_on = [google_service_networking_connection.private_vpc_connection]
-
-  # require_ssl = true
-
   settings {
     backup_configuration {
       enabled = true
@@ -17,16 +13,8 @@ resource "google_sql_database_instance" "main" {
     ip_configuration {
       require_ssl     = true
       ipv4_enabled    = false
-      private_network = var.gcp_global_network.data.grn
+      private_network = var.gcp_subnetwork.data.infrastructure.gcp_global_network_grn
     }
   }
 }
-
-# resource "google_sql_user" "users" {
-#   name     = "me"
-#   instance = google_sql_database_instance.main.name
-#   host     = "me.com"
-#   password = "changeme"
-# }
-
 

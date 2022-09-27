@@ -19,11 +19,11 @@ terraform {
 provider "google" {
   project     = var.gcp_authentication.data.project_id
   credentials = jsonencode(var.gcp_authentication.data)
-  # region      = var.mrc.specs.gcp.region
+  region      = var.gcp_subnetwork.specs.gcp.region
 }
 
 provider "google-beta" {
   project     = var.gcp_authentication.data.project_id
   credentials = jsonencode(var.gcp_authentication.data)
-  # region      = var.mrc.specs.gcp.region
+  region      = var.gcp_subnetwork.specs.gcp.region
 }
