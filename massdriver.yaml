@@ -108,21 +108,15 @@ params:
       description: If the DB instance should have deletion protection enabled.
       type: boolean
       default: true
-    tls_enabled:
-      type: boolean
-      title: TLS Enabled
-      description: Enable TLS encryption
-      default: true
-      $md.immutable: true
 
 connections:
   required:
     - gcp_authentication
-    - subnetwork
+    - gcp_subnetwork
   properties:
     gcp_authentication:
       $ref: massdriver/gcp-service-account
-    subnetwork:
+    gcp_subnetwork:
       $ref: massdriver/gcp-subnetwork
 
 

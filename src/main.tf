@@ -1,7 +1,7 @@
 locals {
   # Cloud SQL expects the Global VPC GRN
-  network_id = var.subnetwork.data.infrastructure.gcp_global_network_grn
-  # These are internal-only sane defaults
+  network_id = var.gcp_subnetwork.data.infrastructure.gcp_global_network_grn
+  # These are internal sane defaults
   massdriver_maitenance_window_day   = "Tuesday"
   massdriver_maintenance_window_hour = 2
   maintenance_window_day_human_readable_to_terraform = {
@@ -18,6 +18,7 @@ locals {
 }
 
 resource "google_sql_database_instance" "main" {
+  # checkov:skip=CKV_GCP_6: TODO: link issue
   provider = google-beta
 
   name             = var.md_metadata.name_prefix
@@ -32,14 +33,13 @@ resource "google_sql_database_instance" "main" {
   deletion_protection = var.deletion_protection
 
   settings {
-    tier = var.instance_configuration.tier
-    # ALWAYS, NEVER, ON_DEMAND
+    tier              = var.instance_configuration.tier
     activation_policy = "ALWAYS"
     availability_type = "REGIONAL"
     user_labels       = var.md_metadata.default_tags
 
     ip_configuration {
-      require_ssl     = var.tls_enabled
+      require_ssl     = false
       ipv4_enabled    = false
       private_network = local.network_id
     }
@@ -87,4 +87,21 @@ resource "google_sql_database_instance" "main" {
       settings[0].ip_configuration[0].require_ssl,
     ]
   }
+}
+
+resource "random_password" "root_user_password" {
+  length  = 10
+  special = false
+}
+
+resource "google_sql_user" "root" {
+  depends_on = [google_sql_database.default]
+  project    = local.project_id
+  name       = var.username
+  instance   = google_sql_database_instance.main.name
+  # Postgres users don't have hosts, so the API will ignore this value which causes Terraform to attempt
+  # to recreate the user each time.
+  # See https://github.com/terraform-providers/terraform-provider-google/issues/1526 for more information.
+  host     = null
+  password = random_password.root_user_password.result
 }
