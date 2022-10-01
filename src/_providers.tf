@@ -17,17 +17,18 @@ terraform {
 }
 
 locals {
-  gcp_region = var.gcp_subnetwork.specs.gcp.region
+  gcp_region  = var.gcp_subnetwork.specs.gcp.region
+  gcp_project = var.gcp_authentication.data.project_id
 }
 
 provider "google" {
-  project     = var.gcp_authentication.data.project_id
+  project     = local.gcp_project
   credentials = jsonencode(var.gcp_authentication.data)
   region      = local.gcp_region
 }
 
 provider "google-beta" {
-  project     = var.gcp_authentication.data.project_id
+  project     = local.gcp_project
   credentials = jsonencode(var.gcp_authentication.data)
   region      = local.gcp_region
 }

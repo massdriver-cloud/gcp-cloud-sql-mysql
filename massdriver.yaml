@@ -26,6 +26,13 @@ params:
         const: MYSQL_8_0
       - title: "5.7"
         const: MYSQL_5_7
+    username:
+      title: Username
+      description: Primary DB username.
+      type: string
+      default: root
+      minLength: 1
+      maxLength: 63
     instance_configuration:
       type: object
       title: Instance Configuration

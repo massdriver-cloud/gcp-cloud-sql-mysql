@@ -95,8 +95,8 @@ resource "random_password" "root_user_password" {
 }
 
 resource "google_sql_user" "root" {
-  depends_on = [google_sql_database.default]
-  project    = local.project_id
+  depends_on = [google_sql_database_instance.main]
+  project    = local.gcp_project
   name       = var.username
   instance   = google_sql_database_instance.main.name
   # Postgres users don't have hosts, so the API will ignore this value which causes Terraform to attempt
