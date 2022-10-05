@@ -2,7 +2,7 @@
 schema: draft-07
 name: "gcp-cloud-sql-mysql"
 description: "GCP Cloud SQL MySQL Database"
-source_url: github.com/YOUR_NAME_HERE/gcp-cloud-sql-mysql
+source_url: github.com/massdriver-cloud/gcp-cloud-sql-mysql
 access: "private"
 type: "bundle"
 
