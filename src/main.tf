@@ -99,5 +99,5 @@ resource "google_sql_user" "root" {
   project    = local.gcp_project
   name       = var.username
   instance   = google_sql_database_instance.main.name
-  password = random_password.root_user_password.result
+  password   = random_password.root_user_password.result
 }
