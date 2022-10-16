@@ -1,16 +1,25 @@
-# This file will be used to generate all of the schema-*.json files in a bundle
 schema: draft-07
-name: "gcp-cloud-sql-mysql"
+name: gcp-cloud-sql-mysql
 description: "GCP Cloud SQL MySQL Database"
 source_url: github.com/massdriver-cloud/gcp-cloud-sql-mysql
-access: "private"
-type: "bundle"
+access: public
+type: bundle
+# type: infrastructure
+# tags:
+#   - database
+# cloud:
+#   - GCP
+
 
 # schema-params.json
 # JSON Schema sans-fields above
 params:
   examples:
     - __name: Development
+      instance_configuration:
+        disk_size: 20
+        tier: db-g1-small
+      deletion_protection: true
   required:
     - engine_version
     - instance_configuration
@@ -62,24 +71,42 @@ params:
           type: string
           title: Instance Type
           description: The type of compute used for the master instance.
-          enum:
-            - db-f1-micro
-            - db-g1-small
-            - db-n1-standard-1
-            - db-n1-standard-2
-            - db-n1-standard-4
-            - db-n1-standard-8
-            - db-n1-standard-16
-            - db-n1-standard-32
-            - db-n1-standard-64
-            - db-n1-standard-96
-            - db-n1-highmem-2
-            - db-n1-highmem-4
-            - db-n1-highmem-8
-            - db-n1-highmem-16
-            - db-n1-highmem-32
-            - db-n1-highmem-64
-            - db-n1-highmem-96
+          # TODO: make db instances and instances in general UI widgets
+          oneOf:
+            - title: 'Shared-core: 1 vCPU 600MB Memory'
+              const: db-f1-micro
+            - title: 'Shared-core: 1 vCPU 1.7GB Memory'
+              const: db-g1-small
+            - title: 'General: 1 vCPU 3.8GB Memory'
+              const: db-n1-standard-1
+            - title: 'General: 2 vCPUs 3.8GB Memory'
+              const: db-n1-standard-2
+            - title: 'General: 4 vCPUs 15GB Memory'
+              const: db-n1-standard-4
+            - title: 'General: 8 vCPUs 40GB Memory'
+              const: db-n1-standard-8
+            - title: 'General: 16 vCPUs 61GB Memory'
+              const: db-n1-standard-16
+            - title: 'General: 32 vCPUs 122GB Memory'
+              const: db-n1-standard-32
+            - title: 'General: 64 vCPUs 245GB Memory'
+              const: db-n1-standard-64
+            - title: 'General: 96 vCPUs 368GB Memory'
+              const: db-n1-standard-96
+            - title: 'High Memory: 2 vCPUs 13GB Memory'
+              const: db-n1-highmem-2
+            - title: 'High Memory: 4 vCPUs 26GB Memory'
+              const: db-n1-highmem-4
+            - title: 'High Memory: 8 vCPUs 53GB Memory'
+              const: db-n1-highmem-8
+            - title: 'High Memory: 16 vCPUs 106GB Memory'
+              const: db-n1-highmem-16
+            - title: 'High Memory: 32 vCPUs 212GB Memory'
+              const: db-n1-highmem-32
+            - title: 'High Memory: 64 vCPUs 425GB Memory'
+              const: db-n1-highmem-64
+            - title: 'High Memory: 96 vCPUs 638GB Memory'
+              const: db-n1-highmem-96
     database_configuration:
       type: object
       title: Database Configuration
@@ -98,6 +125,7 @@ params:
           description: The number of backups to keep. If another backup is made, the oldest one is deleted.
           minimum: 0
           maximum: 20
+          default: 0
         query_insights_enabled:
           type: boolean
           title: Query Insights Enabled
@@ -126,7 +154,6 @@ connections:
     gcp_subnetwork:
       $ref: massdriver/gcp-subnetwork
 
-
 artifacts:
   required:
     - authentication
@@ -138,5 +165,22 @@ artifacts:
 # List of form customizations for params-schema
 ui:
   ui:order:
+    - engine_version
+    - username
+    - instance_configuration
+    - database_configuration
+    - transaction_log_retention_days
+    - deletion_protection # Need to keep this so people CAN delete (turn it off, then delete)
     - "*"
-
+  instance_configuration:
+    ui:order:
+      - disk_size
+      - disk_type
+      - tier
+      - "*"
+  database_configuration:
+    ui:order:
+      - high_availability_enabled
+      - retained_backup_count
+      - query_insights_enabled
+      - "*"
