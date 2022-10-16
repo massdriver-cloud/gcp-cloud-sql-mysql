@@ -5,10 +5,10 @@ locals {
 
   # https://github.com/massdriver-cloud/artifact-definitions/blob/main/definitions/artifacts/mysql-authentication.json
   data_authentication = {
-    username = ""
-    password = ""
+    username = google_sql_user.root.name
+    password = google_sql_user.root.password
     hostname = google_sql_database_instance.main.private_ip_address
-    port     = 5432
+    port     = 3306
   }
 
   artifact = {
