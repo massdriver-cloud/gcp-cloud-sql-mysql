@@ -59,13 +59,13 @@ Form input parameters for configuring a bundle for deployment.
   - **`query_insights_enabled`** *(boolean)*: Enables query insights for your instance. Default: `False`.
   - **`retained_backup_count`** *(integer)*: The number of backups to keep. If another backup is made, the oldest one is deleted. Minimum: `0`. Maximum: `20`. Default: `0`.
 - **`deletion_protection`** *(boolean)*: If the DB instance should have deletion protection enabled. Default: `True`.
-- **`engine_version`** *(string)*: The major version of MySQL to use for your database. GCP manages minor version upgrades. Default: `8.x`.
+- **`engine_version`** *(string)*: The major version of MySQL to use for your database. GCP manages minor version upgrades. Default: `MYSQL_8_0`.
   - **One of**
     - 8.x
     - 5.7
 - **`instance_configuration`** *(object)*: Instance type, disk size, configure properties for your primary instance.
   - **`disk_size`** *(integer)*: The size of the primary database instance in GB. Minimum: `20`. Maximum: `3054`.
-  - **`disk_type`** *(string)*: Solid State has better performance for mixtures of reads and writes. Use Hard Disks for continuous read workloads or for cheaper storage. Default: `Solid State`.
+  - **`disk_type`** *(string)*: Solid State has better performance for mixtures of reads and writes. Use Hard Disks for continuous read workloads or for cheaper storage. Default: `PD_SSD`.
     - **One of**
       - Solid State
       - Hard Disk
@@ -95,9 +95,13 @@ Form input parameters for configuring a bundle for deployment.
   ```json
   {
       "__name": "Development",
-      "deletion_protection": true,
+      "database_configuration": {
+          "high_availability": false
+      },
+      "deletion_protection": false,
       "instance_configuration": {
           "disk_size": 20,
+          "disk_type": "PD_HDD",
           "tier": "db-g1-small"
       }
   }
