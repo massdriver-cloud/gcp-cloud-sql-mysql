@@ -21,7 +21,7 @@ locals {
     specs = {
       rdbms = {
         engine  = "mysql"
-        version = google_sql_database_instance.main.settings[0].version
+        version = tostring(google_sql_database_instance.main.settings[0].version)
       }
     }
   }
