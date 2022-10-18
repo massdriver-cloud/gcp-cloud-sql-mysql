@@ -31,10 +31,9 @@ Bundles are the basic building blocks of infrastructure, applications, and archi
 
 Security and compliance scanning of our bundles is performed using [Bridgecrew](https://www.bridgecrew.cloud/). Massdriver also offers security and compliance scanning of operational infrastructure configured and deployed using the platform.
 
-| Benchmark                                                                                                                                                                                                                                                       | Description                        |
-| --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------- |
+| Benchmark | Description |
+|--------|---------------|
 | [![Infrastructure Security](https://www.bridgecrew.cloud/badges/github/massdriver-cloud/gcp-cloud-sql-mysql/general)](https://www.bridgecrew.cloud/link/badge?vcs=github&fullRepo=massdriver-cloud%2Fgcp-cloud-sql-mysql&benchmark=INFRASTRUCTURE+SECURITY) | Infrastructure Security Compliance |
-
 | [![CIS GCP](https://www.bridgecrew.cloud/badges/github/massdriver-cloud/gcp-cloud-sql-mysql/cis_gcp)](https://www.bridgecrew.cloud/link/badge?vcs=github&fullRepo=massdriver-cloud%2Fgcp-cloud-sql-mysql&benchmark=CIS+GCP+V1.1) | Center for Internet Security, GCP Compliance |
 | [![PCI-DSS](https://www.bridgecrew.cloud/badges/github/massdriver-cloud/gcp-cloud-sql-mysql/pci)](https://www.bridgecrew.cloud/link/badge?vcs=github&fullRepo=massdriver-cloud%2Fgcp-cloud-sql-mysql&benchmark=PCI-DSS+V3.2) | Payment Card Industry Data Security Standards Compliance |
 | [![NIST-800-53](https://www.bridgecrew.cloud/badges/github/massdriver-cloud/gcp-cloud-sql-mysql/nist)](https://www.bridgecrew.cloud/link/badge?vcs=github&fullRepo=massdriver-cloud%2Fgcp-cloud-sql-mysql&benchmark=NIST-800-53) | National Institute of Standards and Technology Compliance |
