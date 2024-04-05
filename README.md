@@ -9,7 +9,9 @@
 [![Issues][issues_shield]][issues_url]
 [![MIT License][license_shield]][license_url]
 
-GCP Cloud SQL MySQL Database.
+
+GCP Cloud SQL MySQL Database
+
 
 ---
 
@@ -26,22 +28,6 @@ Our bundles aren't intended to be used locally, outside of testing. Instead, our
 Bundles are the basic building blocks of infrastructure, applications, and architectures in [Massdriver][website]. Read more [here](https://docs.massdriver.cloud/concepts/bundles).
 
 ## Bundle
-
-<!-- COMPLIANCE:START -->
-
-Security and compliance scanning of our bundles is performed using [Bridgecrew](https://www.bridgecrew.cloud/). Massdriver also offers security and compliance scanning of operational infrastructure configured and deployed using the platform.
-
-| Benchmark | Description |
-|--------|---------------|
-| [![Infrastructure Security](https://www.bridgecrew.cloud/badges/github/massdriver-cloud/gcp-cloud-sql-mysql/general)](https://www.bridgecrew.cloud/link/badge?vcs=github&fullRepo=massdriver-cloud%2Fgcp-cloud-sql-mysql&benchmark=INFRASTRUCTURE+SECURITY) | Infrastructure Security Compliance |
-| [![CIS GCP](https://www.bridgecrew.cloud/badges/github/massdriver-cloud/gcp-cloud-sql-mysql/cis_gcp)](https://www.bridgecrew.cloud/link/badge?vcs=github&fullRepo=massdriver-cloud%2Fgcp-cloud-sql-mysql&benchmark=CIS+GCP+V1.1) | Center for Internet Security, GCP Compliance |
-| [![PCI-DSS](https://www.bridgecrew.cloud/badges/github/massdriver-cloud/gcp-cloud-sql-mysql/pci)](https://www.bridgecrew.cloud/link/badge?vcs=github&fullRepo=massdriver-cloud%2Fgcp-cloud-sql-mysql&benchmark=PCI-DSS+V3.2) | Payment Card Industry Data Security Standards Compliance |
-| [![NIST-800-53](https://www.bridgecrew.cloud/badges/github/massdriver-cloud/gcp-cloud-sql-mysql/nist)](https://www.bridgecrew.cloud/link/badge?vcs=github&fullRepo=massdriver-cloud%2Fgcp-cloud-sql-mysql&benchmark=NIST-800-53) | National Institute of Standards and Technology Compliance |
-| [![ISO27001](https://www.bridgecrew.cloud/badges/github/massdriver-cloud/gcp-cloud-sql-mysql/iso)](https://www.bridgecrew.cloud/link/badge?vcs=github&fullRepo=massdriver-cloud%2Fgcp-cloud-sql-mysql&benchmark=ISO27001) | Information Security Management System, ISO/IEC 27001 Compliance |
-| [![SOC2](https://www.bridgecrew.cloud/badges/github/massdriver-cloud/gcp-cloud-sql-mysql/soc2)](https://www.bridgecrew.cloud/link/badge?vcs=github&fullRepo=massdriver-cloud%2Fgcp-cloud-sql-mysql&benchmark=SOC2)| Service Organization Control 2 Compliance |
-| [![HIPAA](https://www.bridgecrew.cloud/badges/github/massdriver-cloud/gcp-cloud-sql-mysql/hipaa)](https://www.bridgecrew.cloud/link/badge?vcs=github&fullRepo=massdriver-cloud%2Fgcp-cloud-sql-mysql&benchmark=HIPAA) | Health Insurance Portability and Accountability Compliance |
-
-<!-- COMPLIANCE:END -->
 
 ### Params
 
@@ -185,11 +171,35 @@ Connections from other bundles that this bundle depends on.
   - **`specs`** *(object)*
     - **`gcp`** *(object)*: .
       - **`project`** *(string)*
-      - **`region`** *(string)*: GCP region. Must be one of: `['us-east1', 'us-east4', 'us-west1', 'us-west2', 'us-west3', 'us-west4', 'us-central1']`.
+      - **`region`** *(string)*: The GCP region to provision resources in.
 
         Examples:
         ```json
+        "us-east1"
+        ```
+
+        ```json
+        "us-east4"
+        ```
+
+        ```json
+        "us-west1"
+        ```
+
+        ```json
         "us-west2"
+        ```
+
+        ```json
+        "us-west3"
+        ```
+
+        ```json
+        "us-west4"
+        ```
+
+        ```json
+        "us-central1"
         ```
 
 - **`gcp_subnetwork`** *(object)*: A region-bound network for deploying GCP resources. Cannot contain additional properties.
@@ -290,11 +300,35 @@ Connections from other bundles that this bundle depends on.
   - **`specs`** *(object)*
     - **`gcp`** *(object)*: .
       - **`project`** *(string)*
-      - **`region`** *(string)*: GCP region. Must be one of: `['us-east1', 'us-east4', 'us-west1', 'us-west2', 'us-west3', 'us-west4', 'us-central1']`.
+      - **`region`** *(string)*: The GCP region to provision resources in.
 
         Examples:
         ```json
+        "us-east1"
+        ```
+
+        ```json
+        "us-east4"
+        ```
+
+        ```json
+        "us-west1"
+        ```
+
+        ```json
         "us-west2"
+        ```
+
+        ```json
+        "us-west3"
+        ```
+
+        ```json
+        "us-west4"
+        ```
+
+        ```json
+        "us-central1"
         ```
 
 <!-- CONNECTIONS:END -->
@@ -356,7 +390,7 @@ Resources created by this bundle that can be connected to other bundles.
       - **Any of**
         - AWS Security information*object*: Informs downstream services of network and/or IAM policies. Cannot contain additional properties.
           - **`iam`** *(object)*: IAM Policies. Cannot contain additional properties.
-            - **`^[a-z-/]+$`** *(object)*
+            - **`^[a-z]+[a-z_]*[a-z]+$`** *(object)*
               - **`policy_arn`** *(string)*: AWS IAM policy ARN.
 
                 Examples:
@@ -367,6 +401,18 @@ Resources created by this bundle that can be connected to other bundles.
                 ```json
                 "arn:aws:ec2::ACCOUNT_NUMBER:vpc/vpc-foo"
                 ```
+
+          - **`identity`** *(object)*: For instances where IAM policies must be attached to a role attached to an AWS resource, for instance AWS Eventbridge to Firehose, this attribute should be used to allow the downstream to attach it's policies (Firehose) directly to the IAM role created by the upstream (Eventbridge). It is important to remember that connections in massdriver are one way, this scheme perserves the dependency relationship while allowing bundles to control the lifecycles of resources under it's management. Cannot contain additional properties.
+            - **`role_arn`** *(string)*: ARN for this resources IAM Role.
+
+              Examples:
+              ```json
+              "arn:aws:rds::ACCOUNT_NUMBER:db/prod"
+              ```
+
+              ```json
+              "arn:aws:ec2::ACCOUNT_NUMBER:vpc/vpc-foo"
+              ```
 
           - **`network`** *(object)*: AWS security group rules to inform downstream services of ports to open for communication. Cannot contain additional properties.
             - **`^[a-z-]+$`** *(object)*
@@ -385,7 +431,7 @@ Resources created by this bundle that can be connected to other bundles.
               - **`protocol`** *(string)*: Must be one of: `['tcp', 'udp']`.
         - Security*object*: Azure Security Configuration. Cannot contain additional properties.
           - **`iam`** *(object)*: IAM Roles And Scopes. Cannot contain additional properties.
-            - **`^[a-z/-]+$`** *(object)*
+            - **`^[a-z]+[a-z_]*[a-z]$`** *(object)*
               - **`role`**: Azure Role.
 
                 Examples:
@@ -396,7 +442,7 @@ Resources created by this bundle that can be connected to other bundles.
               - **`scope`** *(string)*: Azure IAM Scope.
         - Security*object*: GCP Security Configuration. Cannot contain additional properties.
           - **`iam`** *(object)*: IAM Roles And Conditions. Cannot contain additional properties.
-            - **`^[a-z-/]+$`** *(object)*
+            - **`^[a-z]+[a-z_]*[a-z]$`** *(object)*
               - **`condition`** *(string)*: GCP IAM Condition.
               - **`role`**: GCP Role.
 
@@ -418,6 +464,49 @@ Resources created by this bundle that can be connected to other bundles.
                 ```
 
   - **`specs`** *(object)*: Cannot contain additional properties.
+    - **`aws`** *(object)*: .
+      - **`region`** *(string)*: AWS Region to provision in.
+
+        Examples:
+        ```json
+        "us-west-2"
+        ```
+
+    - **`azure`** *(object)*: .
+      - **`region`** *(string)*: Select the Azure region you'd like to provision your resources in.
+    - **`gcp`** *(object)*: .
+      - **`project`** *(string)*
+      - **`region`** *(string)*: The GCP region to provision resources in.
+
+        Examples:
+        ```json
+        "us-east1"
+        ```
+
+        ```json
+        "us-east4"
+        ```
+
+        ```json
+        "us-west1"
+        ```
+
+        ```json
+        "us-west2"
+        ```
+
+        ```json
+        "us-west3"
+        ```
+
+        ```json
+        "us-west4"
+        ```
+
+        ```json
+        "us-central1"
+        ```
+
     - **`rdbms`** *(object)*: Common metadata for relational databases.
       - **`engine`** *(string)*: The type of database server.
 
@@ -508,12 +597,13 @@ Please connect with us!
 <!-- markdownlint-disable -->
 
 [logo]: https://raw.githubusercontent.com/massdriver-cloud/docs/main/static/img/logo-with-logotype-horizontal-400x110.svg
-
 [docs]: https://docs.massdriver.cloud/?utm_source=github&utm_medium=readme&utm_campaign=gcp-cloud-sql-mysql&utm_content=docs
 [website]: https://www.massdriver.cloud/?utm_source=github&utm_medium=readme&utm_campaign=gcp-cloud-sql-mysql&utm_content=website
 [github]: https://github.com/massdriver-cloud?utm_source=github&utm_medium=readme&utm_campaign=gcp-cloud-sql-mysql&utm_content=github
 [slack]: https://massdriverworkspace.slack.com/?utm_source=github&utm_medium=readme&utm_campaign=gcp-cloud-sql-mysql&utm_content=slack
 [linkedin]: https://www.linkedin.com/company/massdriver/?utm_source=github&utm_medium=readme&utm_campaign=gcp-cloud-sql-mysql&utm_content=linkedin
+
+
 
 [contributors_shield]: https://img.shields.io/github/contributors/massdriver-cloud/gcp-cloud-sql-mysql.svg?style=for-the-badge
 [contributors_url]: https://github.com/massdriver-cloud/gcp-cloud-sql-mysql/graphs/contributors
@@ -528,13 +618,13 @@ Please connect with us!
 [license_shield]: https://img.shields.io/github/license/massdriver-cloud/gcp-cloud-sql-mysql.svg?style=for-the-badge
 [license_url]: https://github.com/massdriver-cloud/gcp-cloud-sql-mysql/blob/main/LICENSE
 
+
 [email_url]: mailto:support@massdriver.cloud
 [email_shield]: https://img.shields.io/badge/email-Massdriver-black.svg?style=for-the-badge&logo=mail.ru&color=000000
 [github_url]: mailto:support@massdriver.cloud
 [github_shield]: https://img.shields.io/badge/follow-Github-black.svg?style=for-the-badge&logo=github&color=181717
 [linkedin_url]: https://linkedin.com/in/massdriver-cloud
 [linkedin_shield]: https://img.shields.io/badge/follow-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&color=0A66C2
-
 [twitter_url]: https://twitter.com/massdriver?utm_source=github&utm_medium=readme&utm_campaign=gcp-cloud-sql-mysql&utm_content=twitter
 [twitter_shield]: https://img.shields.io/badge/follow-Twitter-black.svg?style=for-the-badge&logo=twitter&color=1DA1F2
 [discourse_url]: https://community.massdriver.cloud?utm_source=github&utm_medium=readme&utm_campaign=gcp-cloud-sql-mysql&utm_content=discourse
