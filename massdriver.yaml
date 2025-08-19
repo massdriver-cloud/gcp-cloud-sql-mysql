@@ -3,7 +3,6 @@ name: gcp-cloud-sql-mysql
 version: 1.0.0
 description: GCP Cloud SQL MySQL Database
 source_url: https://github.com/massdriver-cloud/gcp-cloud-sql-mysql
-type: application
 params:
   examples:
   - __name: Development
