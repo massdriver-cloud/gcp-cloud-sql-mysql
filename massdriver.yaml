@@ -1,33 +1,25 @@
 schema: draft-07
 name: gcp-cloud-sql-mysql
-description: "GCP Cloud SQL MySQL Database"
-source_url: github.com/massdriver-cloud/gcp-cloud-sql-mysql
-access: public
-type: bundle
-# uncomment when the CLI supports it
-# type: infrastructure
-# tags:
-#   - database
-# cloud:
-#   - GCP
-
+version: 1.0.0
+description: GCP Cloud SQL MySQL Database
+source_url: https://github.com/massdriver-cloud/gcp-cloud-sql-mysql
 params:
   examples:
-    - __name: Development
-      instance_configuration:
-        disk_size: 20
-        disk_type: PD_HDD
-        tier: db-g1-small
-      database_configuration:
-        high_availability: false
-      deletion_protection: false
+  - __name: Development
+    instance_configuration:
+      disk_size: 20
+      disk_type: PD_HDD
+      tier: db-g1-small
+    database_configuration:
+      high_availability: false
+    deletion_protection: false
   required:
-    - engine_version
-    - username
-    - instance_configuration
-    - database_configuration
-    - transaction_log_retention_days
-    - deletion_protection
+  - engine_version
+  - username
+  - instance_configuration
+  - database_configuration
+  - transaction_log_retention_days
+  - deletion_protection
   properties:
     engine_version:
       type: string
@@ -37,7 +29,7 @@ params:
       oneOf:
       - title: 8.x
         const: MYSQL_8_0
-      - title: "5.7"
+      - title: '5.7'
         const: MYSQL_5_7
     username:
       title: Username
@@ -49,11 +41,11 @@ params:
     instance_configuration:
       type: object
       title: Instance Configuration
-      description: "Instance type, disk size, configure properties for your primary instance."
+      description: Instance type, disk size, configure properties for your primary instance.
       required:
-        - disk_size
-        - disk_type
-        - tier
+      - disk_size
+      - disk_type
+      - tier
       properties:
         disk_size:
           type: integer
@@ -75,50 +67,49 @@ params:
           type: string
           title: Instance Type
           description: The type of compute used for the master instance.
-          # TODO: make db instances and instances in general UI widgets
           oneOf:
-            - title: 'Shared-core: 1 vCPU 600MB Memory'
-              const: db-f1-micro
-            - title: 'Shared-core: 1 vCPU 1.7GB Memory'
-              const: db-g1-small
-            - title: 'General: 1 vCPU 3.8GB Memory'
-              const: db-n1-standard-1
-            - title: 'General: 2 vCPUs 3.8GB Memory'
-              const: db-n1-standard-2
-            - title: 'General: 4 vCPUs 15GB Memory'
-              const: db-n1-standard-4
-            - title: 'General: 8 vCPUs 40GB Memory'
-              const: db-n1-standard-8
-            - title: 'General: 16 vCPUs 61GB Memory'
-              const: db-n1-standard-16
-            - title: 'General: 32 vCPUs 122GB Memory'
-              const: db-n1-standard-32
-            - title: 'General: 64 vCPUs 245GB Memory'
-              const: db-n1-standard-64
-            - title: 'General: 96 vCPUs 368GB Memory'
-              const: db-n1-standard-96
-            - title: 'High Memory: 2 vCPUs 13GB Memory'
-              const: db-n1-highmem-2
-            - title: 'High Memory: 4 vCPUs 26GB Memory'
-              const: db-n1-highmem-4
-            - title: 'High Memory: 8 vCPUs 53GB Memory'
-              const: db-n1-highmem-8
-            - title: 'High Memory: 16 vCPUs 106GB Memory'
-              const: db-n1-highmem-16
-            - title: 'High Memory: 32 vCPUs 212GB Memory'
-              const: db-n1-highmem-32
-            - title: 'High Memory: 64 vCPUs 425GB Memory'
-              const: db-n1-highmem-64
-            - title: 'High Memory: 96 vCPUs 638GB Memory'
-              const: db-n1-highmem-96
+          - title: 'Shared-core: 1 vCPU 600MB Memory'
+            const: db-f1-micro
+          - title: 'Shared-core: 1 vCPU 1.7GB Memory'
+            const: db-g1-small
+          - title: 'General: 1 vCPU 3.8GB Memory'
+            const: db-n1-standard-1
+          - title: 'General: 2 vCPUs 3.8GB Memory'
+            const: db-n1-standard-2
+          - title: 'General: 4 vCPUs 15GB Memory'
+            const: db-n1-standard-4
+          - title: 'General: 8 vCPUs 40GB Memory'
+            const: db-n1-standard-8
+          - title: 'General: 16 vCPUs 61GB Memory'
+            const: db-n1-standard-16
+          - title: 'General: 32 vCPUs 122GB Memory'
+            const: db-n1-standard-32
+          - title: 'General: 64 vCPUs 245GB Memory'
+            const: db-n1-standard-64
+          - title: 'General: 96 vCPUs 368GB Memory'
+            const: db-n1-standard-96
+          - title: 'High Memory: 2 vCPUs 13GB Memory'
+            const: db-n1-highmem-2
+          - title: 'High Memory: 4 vCPUs 26GB Memory'
+            const: db-n1-highmem-4
+          - title: 'High Memory: 8 vCPUs 53GB Memory'
+            const: db-n1-highmem-8
+          - title: 'High Memory: 16 vCPUs 106GB Memory'
+            const: db-n1-highmem-16
+          - title: 'High Memory: 32 vCPUs 212GB Memory'
+            const: db-n1-highmem-32
+          - title: 'High Memory: 64 vCPUs 425GB Memory'
+            const: db-n1-highmem-64
+          - title: 'High Memory: 96 vCPUs 638GB Memory'
+            const: db-n1-highmem-96
     database_configuration:
       type: object
       title: Database Configuration
-      description: "High availability, backups, other database settings can be configured here."
+      description: High availability, backups, other database settings can be configured here.
       required:
-        - high_availability_enabled
-        - retained_backup_count
-        - query_insights_enabled
+      - high_availability_enabled
+      - retained_backup_count
+      - query_insights_enabled
       properties:
         high_availability_enabled:
           type: boolean
@@ -149,44 +140,45 @@ params:
       description: If the DB instance should have deletion protection enabled.
       type: boolean
       default: true
-
 connections:
   required:
-    - gcp_authentication
-    - gcp_subnetwork
+  - gcp_authentication
+  - gcp_subnetwork
   properties:
     gcp_authentication:
-      $ref: massdriver/gcp-service-account
+      "$ref": massdriver/gcp-service-account
     gcp_subnetwork:
-      $ref: massdriver/gcp-subnetwork
-
+      "$ref": massdriver/gcp-subnetwork
 artifacts:
   required:
-    - authentication
+  - authentication
   properties:
     authentication:
-      $ref: massdriver/mysql-authentication
-
-# schema-ui.json
-# List of form customizations for params-schema
+      "$ref": massdriver/mysql-authentication
 ui:
   ui:order:
-    - engine_version
-    - username
-    - instance_configuration
-    - database_configuration
-    - transaction_log_retention_days
-    - deletion_protection # Need to keep this so people CAN delete (turn it off, then delete)
-    - "*"
+  - engine_version
+  - username
+  - instance_configuration
+  - database_configuration
+  - transaction_log_retention_days
+  - deletion_protection
+  - "*"
   instance_configuration:
     ui:order:
-      - disk_size
-      - disk_type
-      - tier
-      - "*"
+    - disk_size
+    - disk_type
+    - tier
+    - "*"
   database_configuration:
     ui:order:
-      - high_availability_enabled
-      - retained_backup_count
-      - query_insights_enabled
-      - "*"
+    - high_availability_enabled
+    - retained_backup_count
+    - query_insights_enabled
+    - "*"
+steps:
+- path: src
+  provisioner: opentofu
+  config:
+    checkov:
+      enable: true
