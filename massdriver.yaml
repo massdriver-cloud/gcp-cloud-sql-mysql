@@ -146,15 +146,15 @@ connections:
   - gcp_subnetwork
   properties:
     gcp_authentication:
-      "$ref": massdriver/gcp-service-account
+      "$ref": gcp-service-account
     gcp_subnetwork:
-      "$ref": massdriver/gcp-subnetwork
+      "$ref": gcp-subnetwork
 artifacts:
   required:
   - authentication
   properties:
     authentication:
-      "$ref": massdriver/mysql-authentication
+      "$ref": mysql-authentication
 ui:
   ui:order:
   - engine_version
